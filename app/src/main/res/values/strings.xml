@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">PastPaperJune</string>
+    <string name="main">Main</string>
+    <string name="addArtist">Add Artist</string>
+    <string name="AddPhotograph">Add Photograph</string>
+    <string name="deleteArtistPhotograph">Delete Artist/Photograph</string>
+    <string name="viewPhotographList">View Photograph List</string>
+    <string name="artistName">Artist Name</string>
+    <string name="add">Add</string>
+    <string name="photoname">Photo Name</string>
+    <string name="photocategory">Photo Category</string>
+    <string name="photograph">Photograph</string>
+    <string name="deletePhoto">Delete Photo</string>
+    <string name="deleteArtist">Delete Artist</string>
+    <string name="viewphotos">View Photos</string>
+    <string name="search">Search</string>
+
+
+        <string-array name="categories">
+            <item>Landscape</item>
+            <item>Wildlife</item>
+            <item>Portrait</item>
+            <item>Wedding</item>
+            <item>Fashion</item>
+            <item>Black and White</item>
+        </string-array>
+</resources>
