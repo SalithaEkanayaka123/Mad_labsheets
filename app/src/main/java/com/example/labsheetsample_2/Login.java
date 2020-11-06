@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.example.labsheetsample_2.database.DBHelper;
 
+import java.util.List;
+
 import static com.example.labsheetsample_2.database.User_Table.User.USER_NAME;
 import static com.example.labsheetsample_2.database.User_Table.User.USER_PASSWORD;
 import static com.example.labsheetsample_2.database.User_Table.User.USER_TYPE;
@@ -34,33 +36,25 @@ public class Login extends AppCompatActivity {
         mydb = new DBHelper(this);
         String username = eusername.getText().toString().trim();
         String password = epassword.getText().toString().trim();
-        Cursor cursor = mydb.listUsers();
-        while (cursor.moveToNext()){
-            String un = cursor.getString(cursor.getColumnIndex(USER_NAME));
-            String pw = cursor.getString(cursor.getColumnIndex(USER_PASSWORD));
-            String type = cursor.getString(cursor.getColumnIndex(USER_TYPE));
-            if (un.equals(username) && pw.equals(password)){
-                if(type.equals("Teacher")){
-                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this , Teacher.class);
-                    intent.putExtra(EXTRA_ID,username).toString();
-                    startActivity(intent);
-                    break;
-                }
-                else{
-                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this , Student.class);
-                    intent.putExtra(EXTRA_ID,username).toString();
-                    startActivity(intent);
-                    break;
-                }
-
-            }
-            else{
-                Intent intent = new Intent(this , Login.class);
+        List users = mydb.listUsers(username , password);
+        if(users.isEmpty()) {
+            Toast.makeText(Login.this, "Invalid", Toast.LENGTH_SHORT).show();
+            eusername.setText(null);
+            epassword.setText(null);
+        }else{
+            if (users.get(2).equals("Teacher")) {
+                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this , Teacher.class);
+                intent.putExtra(EXTRA_ID,username).toString();
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this , Student.class);
+                intent.putExtra(EXTRA_ID,username).toString();
                 startActivity(intent);
             }
+
         }
-        cursor.close();
+
     }
 }

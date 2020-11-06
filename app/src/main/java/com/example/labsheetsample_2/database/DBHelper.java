@@ -61,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
         long result = db.insert(User_Table.User.USER_TABLE_NAME , null , values);
         return result;
     }
-    public Cursor listUsers(){
+    public List listUsers(String username , String password){
         SQLiteDatabase db = getReadableDatabase();
         String[] User_Values = {
                 User_Table.User.USER_ID,
@@ -69,19 +69,32 @@ public class DBHelper extends SQLiteOpenHelper {
                 User_Table.User.USER_PASSWORD ,
                 User_Table.User.USER_TYPE
         };
+        String selection = User_Table.User.USER_NAME + " = ? AND "+ User_Table.User.USER_PASSWORD + " = ? ";
+        String[] selectionArgs = { username, password };
         String UserSort =
                 User_Table.User.USER_ID + " DESC";
 
         Cursor cursor = db.query(
                 User_Table.User.USER_TABLE_NAME,
                 User_Values,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 null,
                 null,
                 UserSort
         );
-        return cursor;
+
+        ArrayList login = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            String user = cursor.getString(cursor.getColumnIndexOrThrow(User_Table.User.USER_NAME));
+            String pwd_user = cursor.getString(cursor.getColumnIndexOrThrow(User_Table.User.USER_PASSWORD));
+            String type_user = cursor.getString(cursor.getColumnIndexOrThrow(User_Table.User.USER_TYPE));
+            login.add(user);
+            login.add(pwd_user);
+            login.add(type_user);
+        }
+        cursor.close();
+        return login;
     }
     public long insertMessage(String subject , String message , String user){
 
@@ -93,23 +106,34 @@ public class DBHelper extends SQLiteOpenHelper {
         long result = db.insert(MESSAGE_TABLE_NAME , null , values);
         return result;
     }
-    public Cursor listMessages1(){
+    public List listMessages1(String subject){
         SQLiteDatabase db = getReadableDatabase();
         String [] messages = {MESSAGE_ID,MESSAGE_USER_NAME,MESSAGE_SUBJECT,MESSAGE_MESSAGE};
         String MessageSort =
                 MESSAGE_ID + " DESC";
+        String selection = MESSAGE_SUBJECT + " = ? ";
+        String[] selectionArgs = { subject };
 
         Cursor cursor = db.query(
                 MESSAGE_TABLE_NAME,
                 messages,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 null,
                 null,
                 MessageSort
         );
-        return cursor;
+        ArrayList messageView = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            String sub = cursor.getString(cursor.getColumnIndexOrThrow(MESSAGE_SUBJECT));
+            String message = cursor.getString(cursor.getColumnIndexOrThrow(MESSAGE_MESSAGE));
+            messageView.add(sub);
+            messageView.add(message);
+        }
+        cursor.close();
+        return messageView;
     }
+
     public List listMessages(){
         SQLiteDatabase db = getReadableDatabase();
         String [] messages = {MESSAGE_ID,MESSAGE_USER_NAME,MESSAGE_SUBJECT,MESSAGE_MESSAGE};
@@ -134,4 +158,5 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return subs;
     }
+
 }

@@ -20,9 +20,8 @@ public class Message extends AppCompatActivity {
     TextView text , message ;
     Intent intent;
     String subject;
-    Cursor cursor;
     DBHelper mydb;
-    List messages , subjects;
+    List messages , subjects , listMessage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,18 +36,11 @@ public class Message extends AppCompatActivity {
         displayMessage(subject);
     }
     public void displayMessage(String sub){
-        cursor = mydb.listMessages1();
-        messages = new ArrayList<>();
-        subjects = new ArrayList<>();
-        while (cursor.moveToNext()){
-            String msg = cursor.getString(cursor.getColumnIndex(MESSAGE_MESSAGE));
-            String sbj = cursor.getString(cursor.getColumnIndex(MESSAGE_SUBJECT));
-            messages.add(msg);
-            subjects.add(sbj);
-        }
-        if (subjects.indexOf(sub) >=0){
-            String message1 = messages.get(subjects.indexOf(sub)).toString();
-            message.setText(message1);
+        listMessage = mydb.listMessages1(sub);
+        if (listMessage.isEmpty()){
+
+        }else{
+            message.setText(listMessage.get(1).toString());
         }
     }
 }
