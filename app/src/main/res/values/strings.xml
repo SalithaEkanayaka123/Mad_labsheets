@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NotificationTutorial</string>
+    <string name="channel_description">Hiiiiiii</string>
+    <string name="channel_name">yyyyyy</string>
 </resources>
