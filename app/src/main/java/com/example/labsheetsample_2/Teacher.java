@@ -17,6 +17,7 @@ public class Teacher extends AppCompatActivity {
     TextView title;
     EditText esubject , emessage ;
     DBHelper dbHelper;
+    public static final String EXTRA_ID1 = "com.example.labsheet12.EXTRA_ID1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
